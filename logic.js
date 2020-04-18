@@ -15,8 +15,17 @@ const shieldWidthInPx = 10;
 const maxNumObstacles = 500;
 const maxNumShields = 5;
 const timeMultiplier = 1;
-const checkIntersectionWithObstacles = true;
+const checkIntersectionWithObstacles = false;
 const levelDurationInSeconds = 10;
+const countdownStart = 5;
+
+const Mode = {
+	NotStarted: 0,
+	Playing: 1,
+	LevelCountdown: 2,
+	Ended: 3
+}
+
 
 let timeStart = 0;
 let intViewportHeight = 0;
@@ -26,6 +35,8 @@ let lastShieldCreated = 0;
 let obstacles = [];
 let shields = [];
 let stillAlive = true;
+let currentLevel = 0;
+let gameMode = Mode.NotStarted;
 
 const cursor = {x: 0, y: 0, shields: 1}
 const canvas = document.getElementById('canvas');
@@ -34,6 +45,9 @@ document.body.addEventListener('mousemove', onMouseMove);
 const infoDialog = document.getElementById('info');
 const endDialog = document.getElementById('end');
 const endTime = document.getElementById('time');
+const levelCountdownDialog = document.getElementById('levelCountdown');
+const levelNumber = document.getElementById('levelNumber');
+const levelCountdown = document.getElementById('countdown');
 
 function onMouseMove(event) {
 
@@ -42,20 +56,20 @@ function onMouseMove(event) {
 
 }
 
-function restart() {
-	cursor.shields = 1;
-	start();
-}
-
 function start() {
 	
 	stillAlive = true;
 	obstacles = [];
+	shields = [];
+	cursor.shields = 1;
 	lastShieldCreated = 0;
 	lastObstacleCreated = 0;
+	currentLevel = 1;
 	infoDialog.style.display = 'none';
 	endDialog.style.display = 'none';
+	canvas.style.cursor = 'none';
 	timeStart = performance.now();
+	gameMode = Mode.LevelCountdown;
 	window.requestAnimationFrame(nextFrame);
 
 }
@@ -64,14 +78,24 @@ function nextFrame() {
 	resize();
 	update();
 
+	if(gameMode === Mode.Playing) {
+
+		if(stillAlive) {
+
+			draw(obstacles, shields, cursor);
+
+		} else {
+
+			end();
+
+		}
+
+	} else if(gameMode === Mode.LevelCountdown) {
+		drawCountdown();
+	}
+
 	if(stillAlive) {
-
-		draw(obstacles, shields, cursor);
-
-	} else {
-
-		end();
-
+		window.requestAnimationFrame(nextFrame);
 	}
 
 }
@@ -91,18 +115,59 @@ function resize() {
 
 function update() {
 
-	updateObstaclesAndStatus(obstacles, shields);
+	updateGameStatus();
 
-	if(stillAlive) {
+	if(gameMode == Mode.Playing) {
 
-		addObstacleIfNeeded(obstacles);
-		addShieldIfNeeded(shields);
+		updateObstaclesAndPlayerStatus(obstacles, shields);
+
+		if(stillAlive) {
+
+			addObstacleIfNeeded(obstacles);
+			addShieldIfNeeded(shields);
+
+		}
 
 	}
 
 }
 
-function updateObstaclesAndStatus(obstacles, shields) {
+function updateGameStatus() {
+
+	const now = performance.now();
+	const secondsInLevel = now - timeStart
+	const levelChangeNeeded = Math.round(secondsInLevel > levelDurationInSeconds * 1000);
+	console.log("Time in level", secondsInLevel);
+
+	if(levelChangeNeeded) {
+
+		currentLevel++;
+		console.log("Level changed!", currentLevel);
+		gameMode = Mode.LevelCountdown;
+		timeStart = performance.now();
+
+	}
+
+}
+
+function drawCountdown() {
+	
+	const now = performance.now();
+	const ellapsedSeconds = (now - timeStart) / 1000;
+	const remainingSeconds = Math.ceil(countdownStart - ellapsedSeconds);
+
+	if(remainingSeconds === 0) {
+		timeStart = performance.now();
+		levelCountdownDialog.style.display = 'none';
+		gameMode = Mode.Playing;
+	} else {
+		levelCountdownDialog.style.display = 'block';
+		levelNumber.innerHTML = currentLevel;
+		levelCountdown.innerHTML = remainingSeconds;
+	}
+}
+
+function updateObstaclesAndPlayerStatus(obstacles, shields) {
 
 	const now = getTime();
 	let obs = [...obstacles];
@@ -260,8 +325,6 @@ function draw(obs, shields, cursor) {
 
 	drawCursor(cursor);
 
-	window.requestAnimationFrame(nextFrame)
-
 }
 
 function clearCanvas() {
@@ -305,4 +368,6 @@ function end() {
 	const now = performance.now();
 	endTime.innerHTML = ((now - timeStart)/1000).toFixed(2);
 	endDialog.style.display = 'block';
+	canvas.style.cursor = 'auto';
+	gameMode = Mode.Ended;
 }

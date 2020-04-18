@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: black;
 }
 canvas {
   width: 100vw;
@@ -7,17 +8,22 @@ canvas {
   display: block;
 }
 
-#info {
+.dialog {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: white;
 }
 
 #end {
   display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+}
+
+#levelCountdown {
+  display: none;
+}
+
+.inline {
+  display: inline-block;
 }

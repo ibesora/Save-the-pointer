@@ -13,9 +13,12 @@
 		</div>
 		<div id="end" class="dialog">
 			<div class="title">Game over</div>
-			<div class="subtitle">Your cursor was dead after <div id="time">300</div> seconds</div>
-			<button onclick="start()">Keep playing!</button>
-			<button onclick="restart()">Restart from zero</button>
+			<div class="subtitle">Your cursor was dead after <div id="time" class="inline">300</div> seconds</div>
+			<button onclick="start()">Try it again!</button>
+		</div>
+		<div id="levelCountdown" class="dialog">
+			<div class="level">Level <div id="levelNumber" class="inline">1</div></div>
+			<div id="countdown">3</div>
 		</div>
 		<canvas id="canvas"></canvas>
 	</body>
