@@ -1,0 +1,23 @@
+{
+  "name": "ld46",
+  "version": "0.0.1",
+  "description": "My entry for the Ludum Dare 46 competition",
+  "main": "index.js",
+  "dependencies": {
+    "http-server": "^0.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibesora/ld46.git"
+  },
+  "author": "@ibesora",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ibesora/ld46/issues"
+  },
+  "homepage": "https://github.com/ibesora/ld46#readme"
+}
