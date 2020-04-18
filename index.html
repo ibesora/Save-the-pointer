@@ -6,14 +6,16 @@
 		<link rel="stylesheet" type="text/css" href="styles.css">
   	</head>
 	<body>
-		<div id="info">
+		<div id="info" class="dialog">
 			<div class="title">Save the pointer!</div>
 			<div class="subtitle">(Don't let anything touch you)</div>
 			<button onclick="start()">Go!</button>
 		</div>
-		<div id="end">
+		<div id="end" class="dialog">
 			<div class="title">Game over</div>
-			<button onclick="start()">Retry!</button>
+			<div class="subtitle">Your cursor was dead after <div id="time">300</div> seconds</div>
+			<button onclick="start()">Keep playing!</button>
+			<button onclick="restart()">Restart from zero</button>
 		</div>
 		<canvas id="canvas"></canvas>
 	</body>
