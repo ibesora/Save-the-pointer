@@ -32,6 +32,7 @@ function onMouseMove(event) {
 function start() {
 	
 	stillAlive = true;
+	obstacles = [];
 	infoDialog.style.display = 'none';
 	endDialog.style.display = 'none';
 	timestart = getTime();
