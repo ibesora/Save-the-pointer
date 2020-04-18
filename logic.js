@@ -8,7 +8,7 @@ const newObstacleProbability = 0.3;
 const minDelayBetweenObstaclesInSeconds = 3;
 const minObstacleSizeToCheck = 15;
 const minObstacleOpacityToCheck = 0.2;
-const maxNumObstacles = 1;
+const maxNumObstacles = 100;
 const timeMultiplier = 1;
 
 let timeStart = 0;
