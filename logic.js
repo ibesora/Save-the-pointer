@@ -6,7 +6,7 @@ const maxYoungLifeInSeconds = 3;
 const maxOldLifeInSeconds = 2;
 const maxAdultLifeInSeconds = 2;
 const newObstacleProbability = 0.9;
-const newShieldProbability = 0.2;
+const newShieldProbability = 0.8;
 const minDelayBetweenObstaclesInSecondsStart = 0.9;
 const minDelayBetweenObstaclesInSecondsTotal = 0.3;
 const perLevelDelayReduction = 0.3;
@@ -19,7 +19,7 @@ const maxNumObstacles = 500;
 const maxNumShields = 5;
 const checkIntersectionWithObstacles = true;
 const levelDurationInSeconds = 10;
-const countdownStart = 5;
+const countdownStart = 3;
 const timeMultiplier = 1;
 
 const Mode = {
@@ -340,6 +340,7 @@ function draw(obs, shields, cursor) {
 	}
 
 	drawCursor(cursor);
+	drawLevelTimeBar();
 
 }
 
@@ -361,14 +362,14 @@ function drawCircle(x, y, radius, hue, saturation, luminosity, opacity, stroke=0
 	}
 }
 
-function drawSquare(x, y, size, hue, saturation, luminosity, opacity, stroke=0, strokeColor="white") {
+function drawRect(x, y, sizeX, sizeY, hue, saturation, luminosity, opacity, stroke=0, strokeColor="white") {
 	ctx2d.fillStyle =  `hsla(${hue}, ${saturation}%, ${luminosity}%, ${opacity})`;
-    ctx2d.fillRect(x, y, size, size);
+    ctx2d.fillRect(x, y, sizeX, sizeY);
 
 	if(stroke !== 0) {
 		ctx2d.strokeStyle = strokeColor;
 		ctx2d.lineWidth = stroke;
-		ctx2d.strokeRect(x, y, size, size);
+		ctx2d.strokeRect(x, y, sizeX, sizeY);
 	}
 }
 
@@ -378,6 +379,12 @@ function drawCursor(cursor) {
 		drawCircle(cursor.x, cursor.y, i*shieldWidthInPx, 0, 0, 0, 1.0, 3);
 	}
 
+}
+
+function drawLevelTimeBar() {
+	const now = performance.now();
+	const width = (now - timeStart) / (1000 * levelDurationInSeconds);
+	drawRect(0, intViewportHeight - 10, width * intViewportWidth, 10, 0, 0, 0, 1., 3);
 }
 
 function end() {
