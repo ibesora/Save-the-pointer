@@ -52,6 +52,7 @@ const endTime = document.getElementById('time');
 const levelCountdownDialog = document.getElementById('levelCountdown');
 const levelNumber = document.getElementById('levelNumber');
 const levelCountdown = document.getElementById('countdown');
+const twitter = document.getElementById('twitter');
 
 function onMouseMove(event) {
 
@@ -381,8 +382,14 @@ function drawCursor(cursor) {
 
 function end() {
 	const now = performance.now();
-	endTime.innerHTML = ((now - timeStart)/1000).toFixed(2);
+	const time = ((now - timeStart)/1000).toFixed(2);
+	endTime.innerHTML = time;
+	addTwitterLink(time)
 	endDialog.style.display = 'block';
 	canvas.style.cursor = 'auto';
 	gameMode = Mode.Ended;
+}
+
+function addTwitterLink(time) {
+	twitter.innerHTML = `<a href="https://twitter.com/share" class="twitter-share-button" data-text="I've survived ${time} seconds on level ${currentLevel} in Save the cursor! Play it here:" data-url="http://bit.ly/test" data-hashtags="#ludumdare46 #SaveTheCursor" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`
 }
