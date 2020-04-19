@@ -46,6 +46,7 @@ const cursor = {x: 0, y: 0, shields: 1}
 const canvas = document.getElementById('canvas');
 const ctx2d = canvas.getContext('2d');
 document.body.addEventListener('mousemove', onMouseMove);
+document.body.addEventListener('touchmove', onMouseMove);
 const infoDialog = document.getElementById('info');
 const endDialog = document.getElementById('end');
 const endTime = document.getElementById('time');
