@@ -5,19 +5,22 @@ const minYoungLifeInSeconds = 2;
 const maxYoungLifeInSeconds = 3;
 const maxOldLifeInSeconds = 2;
 const maxAdultLifeInSeconds = 2;
-const newObstacleProbability = 0.6;
+const newObstacleProbability = 0.9;
 const newShieldProbability = 0.2;
-const minDelayBetweenObstaclesInSeconds = 2;
+const minDelayBetweenObstaclesInSecondsStart = 0.9;
+const minDelayBetweenObstaclesInSecondsTotal = 0.3;
+const perLevelDelayReduction = 0.3;
+const lowerThanMinDelayReductionMultiplier = 0.7;
 const minDelayBetweenShieldsInSeconds = 5;
 const minObstacleSizeToCheck = 15;
 const minObstacleOpacityToCheck = 0.3;
 const shieldWidthInPx = 10;
 const maxNumObstacles = 500;
 const maxNumShields = 5;
-const timeMultiplier = 1;
-const checkIntersectionWithObstacles = false;
+const checkIntersectionWithObstacles = true;
 const levelDurationInSeconds = 10;
 const countdownStart = 5;
+const timeMultiplier = 1;
 
 const Mode = {
 	NotStarted: 0,
@@ -37,6 +40,7 @@ let shields = [];
 let stillAlive = true;
 let currentLevel = 0;
 let gameMode = Mode.NotStarted;
+let minDelayBetweenObstaclesInSeconds = minDelayBetweenObstaclesInSecondsStart;
 
 const cursor = {x: 0, y: 0, shields: 1}
 const canvas = document.getElementById('canvas');
@@ -137,13 +141,24 @@ function updateGameStatus() {
 	const now = performance.now();
 	const secondsInLevel = now - timeStart
 	const levelChangeNeeded = Math.round(secondsInLevel > levelDurationInSeconds * 1000);
-	console.log("Time in level", secondsInLevel);
 
 	if(levelChangeNeeded) {
 
 		currentLevel++;
 		console.log("Level changed!", currentLevel);
 		gameMode = Mode.LevelCountdown;
+		minDelayBetweenObstaclesInSeconds -= perLevelDelayReduction
+		if(minDelayBetweenObstaclesInSeconds < minDelayBetweenObstaclesInSecondsTotal) {
+
+			minDelayBetweenObstaclesInSeconds = minDelayBetweenObstaclesInSecondsTotal * Math.pow(lowerThanMinDelayReductionMultiplier, currentLevel - 3);
+			console.log(minDelayBetweenObstaclesInSecondsTotal, lowerThanMinDelayReductionMultiplier, currentLevel - 3)
+
+		}
+		console.log(minDelayBetweenObstaclesInSeconds)
+		obstacles = [];
+		shields = [];
+		lastObstacleCreated = 0;
+		lastShieldCreated = 0;
 		timeStart = performance.now();
 
 	}
