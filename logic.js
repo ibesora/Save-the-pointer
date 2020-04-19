@@ -46,6 +46,7 @@ const cursor = {x: 0, y: 0, shields: 1}
 const canvas = document.getElementById('canvas');
 const ctx2d = canvas.getContext('2d');
 document.body.addEventListener('mousemove', onMouseMove);
+document.body.addEventListener('touchmove', onTouchMove);
 const infoDialog = document.getElementById('info');
 const endDialog = document.getElementById('end');
 const endTime = document.getElementById('time');
@@ -58,6 +59,13 @@ function onMouseMove(event) {
 
 	cursor.x = event.pageX;
 	cursor.y = event.pageY;
+
+}
+
+function onTouchMove(event) {
+
+	cursor.x = event.touches[0].pageX;
+	cursor.y = event.touches[0].pageY;
 
 }
 
