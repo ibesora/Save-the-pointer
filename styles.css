@@ -41,6 +41,14 @@ canvas {
   padding: 30px;
 }
 
+button {
+  color: white;
+  background-color: black;
+  padding: 20px;
+  font-size: 48;
+  cursor: pointer;
+}
+
 .resp-sharing-button__link,
 .resp-sharing-button__icon {
   display: inline-block

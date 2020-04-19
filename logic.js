@@ -54,6 +54,7 @@ const levelCountdownDialog = document.getElementById('levelCountdown');
 const levelNumber = document.getElementById('levelNumber');
 const levelCountdown = document.getElementById('countdown');
 const share = document.getElementById('share');
+const ambient = document.getElementById('ambient');
 
 function onMouseMove(event) {
 
@@ -83,6 +84,7 @@ function start() {
 	canvas.style.cursor = 'none';
 	timeStart = performance.now();
 	gameMode = Mode.LevelCountdown;
+	ambient.play();
 	window.requestAnimationFrame(nextFrame);
 
 }
